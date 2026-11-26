@@ -19,8 +19,11 @@ docker compose up -d --build
 目标版本；名册与实例在同一事务内整组收口，半截分叉可整笔回收到操作前。详见
 [docs/rollback-gate.md](docs/rollback-gate.md)。金丝雀比例真源另立，不在本闸内。
 
-后端夹具（10 例：时段关闭/开放回退、双回退、半截分叉、整笔回滚、读写同判、审计过滤、
-健康探针、对账桶、开闭戳、空目标）：
+后端夹具（18 例）：`test_rollback_gate.py` 10 例（时段关闭/开放回退、双回退、半截分叉、
+整笔回滚、读写同判、审计过滤、健康探针、对账桶、开闭戳、空目标）；
+`test_rollback_evidence.py` 8 例钉「假回滚成功收口」——成功回执须由写闸拒写旁读∪批次册正式行∪
+回滚桶水位∪审计同命运重放四证复核、事件重放揭穿假回执、窗关硬拒水位不涨、回滚与放行写口交错收束、
+并发单正式行、跨环窗旁读、在途回滚格、surface/rollback21 旁路毒根不复活。
 
 ```bash
 pip install -r backend/requirements.txt pytest httpx

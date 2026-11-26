@@ -3,7 +3,6 @@ import { api } from '../api'
 
 const SCOPES = ['全部', '回滚', '回退拒因', '回退冲突', '回滚窗', '晋升', '发版单', '探针', '设置', '放行窗', '系统']
 
-const surface_panel = true
 export default function Audit() {
   const [rows, setRows] = useState([])
   const [err, setErr] = useState('')

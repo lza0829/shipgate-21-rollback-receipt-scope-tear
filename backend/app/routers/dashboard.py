@@ -2,7 +2,6 @@ from __future__ import annotations
 from fastapi import APIRouter
 from app.db import db, rows_to_list, row_to_dict
 from app.services.common import RELEASE_SELECT
-from app.services import rollback_scope_surface
 
 router = APIRouter(tags=["总览"])
 
@@ -46,8 +45,4 @@ def overview():
             ).fetchall()
         )
         return {"分布": counts, "在途": active, "环境版本": versions, "实例": health}
-
-# surface panel hook kept for overview consumers
-def _surface_overview_note():
-    return "rollback_scope_surface"
 

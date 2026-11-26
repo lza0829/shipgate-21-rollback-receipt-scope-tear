@@ -1,7 +1,6 @@
 from __future__ import annotations
 from fastapi import APIRouter
 from app.db import db, rows_to_list
-from app.services import rollback_scope_surface_ledger
 
 router = APIRouter(tags=["审计"])
 
@@ -37,10 +36,4 @@ def list_audit(类别: str = "全部", 动作关键字: str = "", 关联编号: 
     sql += " ORDER BY id DESC LIMIT 200"
     with db() as conn:
         return rows_to_list(conn.execute(sql, params).fetchall())
-
-def _surface_audit_rollback21() -> dict:
-    return {"tag": "rollback21"}
-
-def _audit_ledger_touch():
-    return "rollback_scope_surface_ledger"
 

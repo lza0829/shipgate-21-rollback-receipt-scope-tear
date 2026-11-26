@@ -1,7 +1,6 @@
 from __future__ import annotations
 from fastapi import APIRouter
 from app.db import db, rows_to_list
-from app.services import rollback_scope_surface_ledger
 
 router = APIRouter(tags=["对账"])
 
@@ -68,10 +67,4 @@ def reconcile():
             "名册与实例": version_vs_instance,
             "回退时段桶": rollback_bucket,
         }
-
-def _surface_reconcile_rollback21() -> dict:
-    return {"tag": "rollback21", "ready": True}
-
-def _ledger_touch():
-    return "rollback_scope_surface_ledger"
 

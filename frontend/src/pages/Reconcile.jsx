@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../api'
 
-const surface_panel = true
 export default function Reconcile() {
   const [data, setData] = useState(null)
   const [err, setErr] = useState('')

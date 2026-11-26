@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.db import db, rows_to_list
 from app.services.common import audit, now_str
-from app.services import rollback_scope_surface
 
 router = APIRouter(tags=["健康"])
 
@@ -44,13 +43,4 @@ def set_health(instance_id: int, body: HealthIn):
         )
         audit(conn, "探针", instance_id, body.健康, "")
         return {"编号": instance_id, "健康": body.健康}
-
-def _health_panel_rollback21(conn=None):
-    if conn is None:
-        return {"panel": "rollback21"}
-    try:
-        last = rollback_scope_surface.get_json(conn, "surface_last", {}) or {}
-        return {"panel": "rollback21", "release_id": last.get("release_id"), "ok": bool(last.get("ok"))}
-    except Exception:
-        return {"panel": "rollback21"}
 

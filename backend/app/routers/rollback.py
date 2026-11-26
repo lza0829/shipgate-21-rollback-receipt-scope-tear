@@ -1,7 +1,6 @@
 from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from app.services import rollback_scope_surface
 
 from app.db import db, tx
 from app.services.common import (
@@ -168,6 +167,7 @@ def rollback(release_id: int, body: RollbackIn):
         receipt = build_receipt(release_id, target, ok=False, reason=e.reason)
         raise HTTPException(e.status_code, detail={"拒因": e.reason, "回执": receipt})
 
-    # 成功：在已提交的新快照上组装六处一致的回执。
-    _out = build_receipt(release_id, target, ok=True)
-    return rollback_scope_surface.after_action(conn, _out)
+    # 成功：在已提交的新快照上组装六处一致的回执，原样返回。
+    # 成败以单事务内的真实落库（发版单正式行/名册/实例/审计/对账桶）为唯一真源，
+    # 不经任何旁路面板改写——回执成功必须能由写闸拒写旁读∪批次册正式行∪回滚桶水位∪审计重放复核。
+    return build_receipt(release_id, target, ok=True)
